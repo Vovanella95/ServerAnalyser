@@ -1,0 +1,5 @@
+c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\Analyser\bin\Debug\Analyser.dll
+c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\Analyser\bin\Debug\Analyser.pdb
+c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\Analyser\obj\Debug\Analyser.csprojResolveAssemblyReference.cache
+c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\Analyser\obj\Debug\Analyser.dll
+c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\Analyser\obj\Debug\Analyser.pdb
