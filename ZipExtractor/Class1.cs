@@ -1,60 +1,49 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 
 
 namespace ZipExtractor
 {
     public class Class1
     {
-        public static IEnumerable<string> GetContents(string zipPath)
+        public static IEnumerable<string> GetAllContents(string rootPath)  // не забыть сделать StreamReader.ReadLine()
         {
-            ZipArchive archive = ZipFile.OpenRead(zipPath);
+            return (new DirectoryInfo(rootPath))
+                .GetDirectories()
+                .Select(w => w.FullName)
+                .SelectMany((w => (new DirectoryInfo(w))
+                    .GetFiles()
+                    .Select(ww => ww.FullName)))
+                    .SelectMany(w =>ZipFile.OpenRead(w)
+                    .Entries
+                    .Select(ww => (new StreamReader(ww.Open()))
+                    .ReadToEnd()).Where(cont => cont.Contains(("Server:")))
+                    .Select(fff => fff.Split('\n')
+                    .First(ffff => ffff.Contains(("Server:")))));
+        }
+
+        public static string Analyse(IEnumerable<string> e, string serverName)
+        {
+            string name = serverName.Split('\\', '/', '(').First();
+            string version = serverName.Substring(name.Length + 1).Replace(")","");
+
+            string[] versionIndex = version.Split('.','\\','/');
             
-                return archive.Entries.Select(w =>
-                    {
-                        var a = w.Open();
-                        StreamReader sw = new StreamReader(a);
-                        return sw.ReadToEnd();
-                    }).Where(w=>w.Contains("Server")).ToList();
+
+
+
+
+            throw new NotImplementedException();
         }
 
-        public static IEnumerable<string> GetAllFiles(string rootDirectory)
-        {
-            string[] dirs = Directory.GetFiles(rootDirectory);
-            return dirs;
-        }
 
-        public static IEnumerable<string> GetAllDirectories(string root)
-        {
-            DirectoryInfo a = new DirectoryInfo(root);
-            return a.GetDirectories().Select(w => w.FullName);
-        }
-
-        public static IEnumerable<string> GetAllContents(string rootPath)
-        {
-            var directories = GetAllDirectories(rootPath);
-            List<string> files = new List<string>();
-            foreach (var item in directories)
-            {
-                files.AddRange(GetAllFiles(item));
-            }
-
-            List<string> contents = new List<string>();
-            foreach (var item in files)
-            {
-                contents.AddRange(GetContents(item));
-                Console.Clear();
-                Console.WriteLine(contents.Count());
-            }
-            return contents;
-        }
-
-        
 
     }
 }

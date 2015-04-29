@@ -6,3 +6,11 @@ c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalys
 c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\ServerAnalyser\bin\Debug\ZipExtractor.pdb
 c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\ServerAnalyser\obj\Debug\ServerAnalyser.exe
 c:\users\uladzimir_paliukhovi\documents\visual studio 2013\Projects\ServerAnalyser\ServerAnalyser\obj\Debug\ServerAnalyser.pdb
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\bin\Debug\ServerAnalyser.exe.config
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\obj\Debug\ServerAnalyser.exe
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\obj\Debug\ServerAnalyser.pdb
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\bin\Debug\ServerAnalyser.exe
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\bin\Debug\ServerAnalyser.pdb
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\bin\Debug\ZipExtractor.dll
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\bin\Debug\ZipExtractor.pdb
+C:\Users\Uladzimir_Paliukhovi\Documents\ServerAnalyser\ServerAnalyser\obj\Debug\ServerAnalyser.csprojResolveAssemblyReference.cache
