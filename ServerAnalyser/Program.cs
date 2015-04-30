@@ -14,7 +14,7 @@ namespace ServerAnalyser
         static void Main(string[] args)
         {
             var path = @"C:\Users\Uladzimir_Paliukhovi\Desktop\PackedHeaders2";
-            var aaa = Class1.GetAllContents(path);
+            var aaa = Analyser.GetAllContents(path);
 
 
            /* var ccc = aaa.Where((w => w.Contains("Jetty")));
@@ -29,13 +29,9 @@ namespace ServerAnalyser
                 }
             }*/
 
-
-
-
-
-
-
-            Console.WriteLine(Class1.Analyse(aaa, "Apache(12.12.5)"));
+            Console.WriteLine(Analyser.Analyse(aaa, "Microsoft-IIS/7.5"));
+            //Class1.Analyse(aaa, "Microsoft-IIS");
+            
             Console.ReadLine();
         }
     }
