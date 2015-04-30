@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -46,17 +45,28 @@ namespace ZipExtractor
         {
             var name = GetName(serverName);
             var version = GetVersion(serverName);
-            var ourServers = e.Where(w => GetName(w) == name);
-            var ourCount = ourServers.Count(); // Добавив эти переменные я выиграл около 20% времени чтобы не считать каждый раз
-            var globalCount = e.Count();
-            var info = "На данном сервере стоят " + 100.0 * ourCount / globalCount + "% серверов\n";
+            var count = 0;
+            var countGlobal = 0;
+            var countVersion = 0;
+            var versions = new List<string>();
 
-            if (version == string.Empty) return info;
-
-            info += "Серверов именно этой версии: " +
-                    (100.0 * ourServers.Count(w=>GetVersion(w) == version) / ourCount) +
-                    "% всех серверов " + name;
-            return info;
+            foreach (var item in e)
+            {
+                if (GetName(item) == name)
+                {
+                    countGlobal++;
+                    if (GetVersion(item) == version)
+                    {
+                        countVersion++;
+                    }
+                    if (GetVersion(item) != "" && !versions.Contains(GetVersion(item)))
+                    {
+                        versions.Add(GetVersion(item));
+                    }
+                }
+                count++;
+            }
+            throw new NotImplementedException();
         }
 
         public static string GetVersion(string serverName)
@@ -70,4 +80,12 @@ namespace ZipExtractor
             return serverName.Replace("Server: ","").Replace("\r","").Split('\\', '/', '(',' ').First();
         }
     }
+
+    public class VersionInfo
+    {
+        public string VersionName;
+        public int VersionCount;
+    }
+
+
 }
