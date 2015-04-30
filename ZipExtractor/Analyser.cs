@@ -9,11 +9,15 @@ using System.IO.Compression;
 using System.Net;
 
 
+using System.Threading;
+
+
+
 namespace ZipExtractor
 {
     public class Analyser
     {
-        public static IEnumerable<string> GetAllContents(string rootPath)  // не забыть сделать StreamReader.ReadLine()
+        public static IEnumerable<string> GetAllContents(string rootPath)
         {
             return (new DirectoryInfo(rootPath))
                 .GetDirectories()
@@ -30,29 +34,24 @@ namespace ZipExtractor
                     .Entries
                     .Select(ww => GetServerHeader(ww.Open()))
                     .Where(cont => cont!=null);
-
-
-            throw new Exception();
         }
 
         public static string GetServerHeader(Stream httpHeaders)
         {
-            StreamReader stream = new StreamReader(httpHeaders);
+            var stream = new StreamReader(httpHeaders);
             while (!stream.EndOfStream)
             {
                 var line = stream.ReadLine();
-                if (line.Contains("Server:")) return line;
+                if (line != null && line.Contains("Server:")) return line;
             }
             return null;
         }
 
         public static string Analyse(IEnumerable<string> e, string serverName)
         {
-            string name = GetName(serverName);
-            string version = GetVersion(serverName);
-            string[] versionIndex = version.Split('.','\\','/');
-            int ServerCount = e.Count(w => GetName(w)==name);
-            string info = "На данном сервере стоят " + 100.0*e.Count(w => GetName(w) == name)/e.Count() + "% серверов\n";
+            var name = GetName(serverName);
+            var version = GetVersion(serverName);
+            var info = "На данном сервере стоят " + 100.0*e.Count(w => GetName(w) == name)/e.Count() + "% серверов\n";
             if (version == string.Empty)
             {
                 return info;
@@ -60,7 +59,6 @@ namespace ZipExtractor
             info += "Серверов именно этой версии: " +
                     (100.0*e.Count(w => GetName(w) == name && GetVersion(w) == version)/e.Count(w => GetName(w) == name)) +
                     "% всех серверов " + name;
-
             return info;
         }
 
@@ -75,10 +73,4 @@ namespace ZipExtractor
             return serverName.Replace("Server: ","").Replace("\r","").Split('\\', '/', '(',' ').First();
         }
     }
-
-
-
-
-
-
 }
