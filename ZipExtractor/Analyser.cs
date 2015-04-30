@@ -2,14 +2,9 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.IO.Compression;
-using System.Net;
 
-
-using System.Threading;
 
 
 
@@ -51,20 +46,22 @@ namespace ZipExtractor
         {
             var name = GetName(serverName);
             var version = GetVersion(serverName);
-            var info = "На данном сервере стоят " + 100.0*e.Count(w => GetName(w) == name)/e.Count() + "% серверов\n";
-            if (version == string.Empty)
-            {
-                return info;
-            }
+            var ourServers = e.Where(w => GetName(w) == name);
+            var ourCount = ourServers.Count(); // Добавив эти переменные я выиграл около 20% времени чтобы не считать каждый раз
+            var globalCount = e.Count();
+            var info = "На данном сервере стоят " + 100.0 * ourCount / globalCount + "% серверов\n";
+
+            if (version == string.Empty) return info;
+
             info += "Серверов именно этой версии: " +
-                    (100.0*e.Count(w => GetName(w) == name && GetVersion(w) == version)/e.Count(w => GetName(w) == name)) +
+                    (100.0 * ourServers.Count(w=>GetVersion(w) == version) / ourCount) +
                     "% всех серверов " + name;
             return info;
         }
 
         public static string GetVersion(string serverName)
         {
-            char[] versionSymbols = new char[]{'1','2','3','4','5','6','7','8','9','.','0'};
+            var versionSymbols = new char[]{'1','2','3','4','5','6','7','8','9','.','0'};
             return new string(serverName.Where(w =>versionSymbols.Contains(w)).ToArray());
         }
 
