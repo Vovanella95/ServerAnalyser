@@ -77,7 +77,7 @@ namespace ZipExtractor
                 Console.WriteLine(counter);
             }
 
-            return serverList.Where(w=>w.ThisCount>30).ToList();
+            return serverList.Where(w=>w.ThisCount>50).ToList();
         }
 
         public static string GetVersion(string serverName)
