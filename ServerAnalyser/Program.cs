@@ -13,13 +13,11 @@ namespace ServerAnalyser
     {
         static void Main(string[] args)
         {
-            const string path = @"C:\Users\Uladzimir_Paliukhovi\Desktop\PackedHeaders2";
+            const string path = @"C:\Users\Uladzimir_Paliukhovi\Desktop\PackedHeaders";
             var data = Analyser.GetAllContents(path);
-
-            Analyser.PrintInfo(Analyser.Analyse(data, "Microsoft-IIS"));
+            var c = Analyser.FullAnalyse(data);
             //Class1.Analyse(aaa, "Microsoft-IIS");
-            
-            Console.ReadLine();
+           Console.ReadLine();
         }
     }
 }

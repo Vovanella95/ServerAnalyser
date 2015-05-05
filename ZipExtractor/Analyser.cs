@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.IO.Compression;
-
-
+using System.Net;
 
 
 namespace ZipExtractor
@@ -36,7 +35,7 @@ namespace ZipExtractor
             while (!stream.EndOfStream)
             {
                 var line = stream.ReadLine();
-                if (line != null && line.Contains("Server:")) return line;
+                if (line != null && line.Split(' ').First()=="Server:") return line;
             }
             return null;
         }
@@ -45,7 +44,7 @@ namespace ZipExtractor
         {
             var name = GetName(serverName);
             int globalCount = 0;
-            ServerInfo si = new ServerInfo(GetName(serverName));
+            ServerInfo si = new ServerInfo(GetName(serverName),serverName);
 
             foreach (var item in e)
             {
@@ -59,6 +58,28 @@ namespace ZipExtractor
             return si;
         }
 
+        public static IEnumerable<ServerInfo> FullAnalyse(IEnumerable<string> e)
+        {
+            List<ServerInfo> serverList = new List<ServerInfo>();
+            int counter = 0;
+            foreach (var item in e)
+            {
+                if (serverList.Count(w => w.Name == GetName(item)) == 0)
+                {
+                    serverList.Add(new ServerInfo(GetName(item),item));
+                }
+                else
+                {
+                    serverList.First(w=>w.Name==GetName(item)).Add(GetVersion(item));
+                }
+                counter++;
+                Console.Clear();
+                Console.WriteLine(counter);
+            }
+
+            return serverList.Where(w=>w.ThisCount>30).ToList();
+        }
+
         public static string GetVersion(string serverName)
         {
             var versionSymbols = new char[]{'1','2','3','4','5','6','7','8','9','.','0'};
@@ -67,7 +88,8 @@ namespace ZipExtractor
 
         public static string GetName(string serverName)
         {
-            return serverName.Replace("Server: ","").Replace("\r","").Split('\\', '/', '(',' ').First();
+             var name = serverName.Replace("Server: ", "").Split('\\', '/', '(', ' ').First().Replace("\r", "");
+            return name.Length > 2 ? name : "Other";
         }
 
         public static void PrintInfo(ServerInfo server)
@@ -99,11 +121,13 @@ namespace ZipExtractor
     {
         public List<VersionInfo> Versions;
         public string Name;
+        public string FullName;
         public int GlobalCount;
         public int ThisCount;
-        public ServerInfo(string name)
+        public ServerInfo(string name, string fullName)
         {
             Name = name;
+            FullName = fullName;
             Versions = new List<VersionInfo>();
             GlobalCount = 0;
             ThisCount = 0;
