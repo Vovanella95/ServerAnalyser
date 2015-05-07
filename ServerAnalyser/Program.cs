@@ -13,10 +13,16 @@ namespace ServerAnalyser
     {
         static void Main(string[] args)
         {
-            const string path = @"C:\Users\Uladzimir_Paliukhovi\Desktop\PackedHeaders";
+            const string path = @"C:\Users\Uladzimir_Paliukhovi\Desktop\PackedHeaders2";
             var data = Analyser.GetAllContents(path);
             var c = Analyser.FullAnalyse(data);
-            //Class1.Analyse(aaa, "Microsoft-IIS");
+
+            double summ = c.Sum(w => w.ThisCount);
+
+            foreach (var item in c.OrderByDescending(w=>w.ThisCount))
+            {
+                Console.WriteLine(item.Name + "  -  " + item.ThisCount/summ*100);
+            }
            Console.ReadLine();
         }
     }

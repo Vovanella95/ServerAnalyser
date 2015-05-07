@@ -43,7 +43,6 @@ namespace ZipExtractor
         public static ServerInfo Analyse(IEnumerable<string> e, string serverName)
         {
             var name = GetName(serverName);
-            int globalCount = 0;
             ServerInfo si = new ServerInfo(GetName(serverName),serverName);
 
             foreach (var item in e)
@@ -52,16 +51,13 @@ namespace ZipExtractor
                 {
                     si.Add(GetVersion(item));
                 }
-                globalCount++;
             }
-            si.GlobalCount = globalCount;
             return si;
         }
 
         public static IEnumerable<ServerInfo> FullAnalyse(IEnumerable<string> e)
         {
             List<ServerInfo> serverList = new List<ServerInfo>();
-            int counter = 0;
             foreach (var item in e)
             {
                 if (serverList.Count(w => w.Name == GetName(item)) == 0)
@@ -72,9 +68,6 @@ namespace ZipExtractor
                 {
                     serverList.First(w=>w.Name==GetName(item)).Add(GetVersion(item));
                 }
-                counter++;
-                Console.Clear();
-                Console.WriteLine(counter);
             }
 
             return serverList.Where(w=>w.ThisCount>50).ToList();
@@ -92,23 +85,6 @@ namespace ZipExtractor
             return name.Length > 2 ? name : "Other";
         }
 
-        public static void PrintInfo(ServerInfo server)
-        {
-           Console.WriteLine("Server: "+server.Name+" ("+(server.ThisCount*100.0/server.GlobalCount)+"% Of All Servers)");
-
-            double percent = 0;
-            foreach (var version in server.Versions)
-            {
-                var localPercent = version.Count*100.0/server.ThisCount;
-                if (localPercent>5)
-                {
-                    Console.WriteLine((version.Name!=""? version.Name: "No version")+"  -  "+localPercent+"%");
-                    percent += localPercent;
-                }
-            }
-            Console.WriteLine("Other:  -  "+ (100 - percent)+"%");
-
-        }
     }
 
     public class VersionInfo
@@ -122,14 +98,12 @@ namespace ZipExtractor
         public List<VersionInfo> Versions;
         public string Name;
         public string FullName;
-        public int GlobalCount;
         public int ThisCount;
         public ServerInfo(string name, string fullName)
         {
             Name = name;
             FullName = fullName;
             Versions = new List<VersionInfo>();
-            GlobalCount = 0;
             ThisCount = 0;
         }
         public void Add(string version)
